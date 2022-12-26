@@ -6,31 +6,10 @@ import {
   Scene,
   Vector3,
 } from "@babylonjs/core";
-import type { CustomSceneOptions } from "./types";
+import { BaseScene } from "./lib/base-scene";
 
-const defaultOptions: CustomSceneOptions = {
-  debug: false,
-};
-
-export class BasicScene {
-  private engine: Engine;
-  private scene: Scene;
-
-  constructor(canvas: HTMLCanvasElement, options = defaultOptions) {
-    this.engine = new Engine(canvas);
-    this.scene = this.createScene();
-
-    // show devtools
-    if (options.debug) {
-      this.scene.debugLayer.show();
-    } else {
-      this.scene.debugLayer.hide();
-    }
-
-    this.engine.runRenderLoop(this.render);
-  }
-
-  private createScene = (engine: Engine = this.engine) => {
+export class BasicScene extends BaseScene {
+  createScene = (engine: Engine = this.engine) => {
     const scene = new Scene(engine);
 
     // add camera
@@ -52,10 +31,5 @@ export class BasicScene {
     ball.position = new Vector3(0, 1, 0);
 
     return scene;
-  };
-
-  private render = () => {
-    // rendering implementation
-    this.scene.render();
   };
 }
