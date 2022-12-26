@@ -6,16 +6,26 @@ import {
   Scene,
   Vector3,
 } from "@babylonjs/core";
+import type { CustomSceneOptions } from "./types";
+
+const defaultOptions: CustomSceneOptions = {
+  debug: false,
+};
 
 export class BasicScene {
   private engine: Engine;
   private scene: Scene;
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, options = defaultOptions) {
     this.engine = new Engine(canvas);
     this.scene = this.createScene();
 
-    this.scene.debugLayer.show();
+    // show devtools
+    if (options.debug) {
+      this.scene.debugLayer.show();
+    } else {
+      this.scene.debugLayer.hide();
+    }
 
     this.engine.runRenderLoop(this.render);
   }
