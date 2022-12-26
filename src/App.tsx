@@ -11,7 +11,11 @@ function App() {
     }
 
     // initialize scene
-    new StandardMaterials(canvasRef.current, { debug: showDebugger });
+    const scene = new StandardMaterials(canvasRef.current, {
+      debug: showDebugger,
+    });
+
+    scene.initialize();
   }, [showDebugger]);
 
   return (

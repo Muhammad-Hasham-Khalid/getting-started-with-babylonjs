@@ -7,17 +7,25 @@ const defaultOptions: CustomSceneOptions = {
 
 export abstract class BaseScene {
   protected engine: Engine;
-  protected scene: Scene;
+  protected scene?: Scene;
+  protected options: CustomSceneOptions;
 
   constructor(canvas: HTMLCanvasElement, options = defaultOptions) {
     this.engine = new Engine(canvas);
-    this.scene = this.createScene();
+    this.options = options;
 
+    this.initialize = this.initialize.bind(this);
+  }
+
+  initialize() {
     // binding methods
     this.render = this.render.bind(this);
+    this.createScene = this.createScene.bind(this);
+
+    this.scene = this.createScene();
 
     // show devtools
-    if (options.debug) {
+    if (this.options.debug) {
       this.scene.debugLayer.show();
     } else {
       this.scene.debugLayer.hide();
@@ -38,6 +46,12 @@ export abstract class BaseScene {
    * @description this method contains the rendering logic for the scene and can be overriden if needed
    */
   render() {
+    if (!this.scene) {
+      throw new Error(
+        "Uninitialized Scene Error: Scene not initialized yet initialize() should be called before render()"
+      );
+    }
+
     this.scene.render();
   }
 }
