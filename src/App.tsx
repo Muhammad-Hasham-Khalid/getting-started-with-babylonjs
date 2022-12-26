@@ -12,7 +12,7 @@ function App() {
 
     // initialize scene
     const scene = new StandardMaterials(canvasRef.current, {
-      debug: showDebugger,
+      debug: false && showDebugger,
     });
 
     scene.initialize();
