@@ -15,10 +15,10 @@ export abstract class BaseScene {
     this.options = options;
   }
 
-  initialize: () => void | Promise<void> = () => {
-    this.scene = this.createScene();
+  initialize: () => void | Promise<void> = async () => {
+    this.scene = await this.createScene();
 
-    this.createEnvironment();
+    await this.createEnvironment();
 
     // show devtools
     if (this.options.debug) {
@@ -34,13 +34,13 @@ export abstract class BaseScene {
    * @param engine
    * @description Create the scene with or without the additional items in this function
    */
-  abstract createScene: (engine?: Engine) => Scene;
+  abstract createScene: (engine?: Engine) => Scene | Promise<Scene>;
 
   /**
    * @description Create the environment for the scene in this method.
    * It is called just after the scene is created.
    */
-  createEnvironment: () => void = () => {};
+  createEnvironment: () => void | Promise<void> = () => {};
 
   /**
    * @description This method contains the rendering logic for the scene and can be overriden if needed
