@@ -113,7 +113,7 @@ export class LightsShadows extends BaseScene {
       10,
       scene
     );
-    spotlight.intensity = 100;
+    spotlight.intensity = 10;
     spotlight.shadowEnabled = true;
     spotlight.shadowMaxZ = 100;
     spotlight.shadowMinZ = 1;
