@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import { StandardMaterials } from "./modules/babylon";
+import { useEffect, useRef } from "react";
+import { PBR } from "./modules/babylon";
 
 function App() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [showDebugger, setShowDebugger] = useState(true);
 
   useEffect(() => {
     if (canvasRef.current === null) {
@@ -11,26 +10,20 @@ function App() {
     }
 
     // initialize scene
-    const scene = new StandardMaterials(canvasRef.current, {
-      debug: false && showDebugger,
+    let valFromStorage = localStorage.getItem("showDebugger");
+    let showDebugger = valFromStorage
+      ? (JSON.parse(valFromStorage) as boolean)
+      : false;
+
+    const scene = new PBR(canvasRef.current, {
+      debug: showDebugger,
     });
 
     scene.initialize();
-  }, [showDebugger]);
+  }, []);
 
   return (
     <div className="App">
-      <label htmlFor="show-debugger">
-        Show Debugger
-        <input
-          type="checkbox"
-          name="debug"
-          id="show-debugger"
-          checked={showDebugger}
-          onChange={(e) => setShowDebugger(e.target.checked)}
-        />
-      </label>
-
       <canvas ref={canvasRef} />
     </div>
   );

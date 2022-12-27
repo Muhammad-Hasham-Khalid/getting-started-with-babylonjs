@@ -12,7 +12,7 @@ import { BaseScene } from "./lib/base-scene";
 import { getTextureUrl } from "./utils";
 
 export class StandardMaterials extends BaseScene {
-  createScene(engine: Engine = this.engine) {
+  createScene = (engine: Engine = this.engine) => {
     const scene = new Scene(engine);
 
     // add camera
@@ -29,20 +29,20 @@ export class StandardMaterials extends BaseScene {
     // add ground
     const groundSize = { width: 100, height: 100 };
     const ground = MeshBuilder.CreateGround("ground", groundSize, scene);
-    ground.material = this.createGroundMaterial();
+    ground.material = this.createGroundMaterial(scene);
 
     // add ball
     const ball = MeshBuilder.CreateSphere("ball", { diameter: 6 }, scene);
     ball.position = new Vector3(0, 3, 0);
-    ball.material = this.createBallMaterial();
+    ball.material = this.createBallMaterial(scene);
 
     // make the camera look at the ball
     camera.target = ball.position;
 
     return scene;
-  }
+  };
 
-  createGroundMaterial() {
+  createGroundMaterial(scene: Scene) {
     const groundMat = new StandardMaterial("groundMat");
 
     const uScale = 3;
@@ -50,28 +50,19 @@ export class StandardMaterials extends BaseScene {
 
     const textures = [];
 
-    const diffuseTex = new Texture(
-      getTextureUrl("cobblestone", "diff"),
-      this.scene
-    );
+    const diffuseTex = new Texture(getTextureUrl("cobblestone", "diff"), scene);
     groundMat.diffuseTexture = diffuseTex;
     textures.push(diffuseTex);
 
-    const aoTex = new Texture(getTextureUrl("cobblestone", "ao"), this.scene);
+    const aoTex = new Texture(getTextureUrl("cobblestone", "ao"), scene);
     groundMat.ambientTexture = aoTex;
     textures.push(aoTex);
 
-    const normalTex = new Texture(
-      getTextureUrl("cobblestone", "nor"),
-      this.scene
-    );
+    const normalTex = new Texture(getTextureUrl("cobblestone", "nor"), scene);
     groundMat.bumpTexture = normalTex;
     textures.push(normalTex);
 
-    const specTex = new Texture(
-      getTextureUrl("cobblestone", "spec"),
-      this.scene
-    );
+    const specTex = new Texture(getTextureUrl("cobblestone", "spec"), scene);
     groundMat.specularTexture = specTex;
     textures.push(specTex);
 
@@ -83,7 +74,7 @@ export class StandardMaterials extends BaseScene {
     return groundMat;
   }
 
-  createBallMaterial() {
+  createBallMaterial(scene: Scene) {
     const ballMat = new StandardMaterial("ballMat");
 
     const uScale = 2;
@@ -91,21 +82,21 @@ export class StandardMaterials extends BaseScene {
 
     const textures = [];
 
-    const diffuseTex = new Texture(getTextureUrl("metal", "diff"), this.scene);
+    const diffuseTex = new Texture(getTextureUrl("metal", "diff"), scene);
     ballMat.diffuseTexture = diffuseTex;
     textures.push(diffuseTex);
 
-    const normalTex = new Texture(getTextureUrl("metal", "nor"), this.scene);
+    const normalTex = new Texture(getTextureUrl("metal", "nor"), scene);
     ballMat.bumpTexture = normalTex;
     ballMat.invertNormalMapX = true;
     ballMat.invertNormalMapY = true;
     textures.push(normalTex);
 
-    const aoTex = new Texture(getTextureUrl("metal", "ao"), this.scene);
+    const aoTex = new Texture(getTextureUrl("metal", "ao"), scene);
     ballMat.ambientTexture = aoTex;
     textures.push(aoTex);
 
-    const specTex = new Texture(getTextureUrl("metal", "spec"), this.scene);
+    const specTex = new Texture(getTextureUrl("metal", "spec"), scene);
     ballMat.specularTexture = specTex;
     ballMat.specularPower = 10;
     textures.push(specTex);

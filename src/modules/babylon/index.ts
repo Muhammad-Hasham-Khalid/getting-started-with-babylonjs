@@ -3,3 +3,4 @@ import "@babylonjs/inspector";
 
 export * from "./basic-scene";
 export * from "./standard-materials";
+export * from "./PBR";

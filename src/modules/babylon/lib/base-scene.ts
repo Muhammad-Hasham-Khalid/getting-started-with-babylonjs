@@ -1,4 +1,5 @@
 import { Engine, Scene } from "@babylonjs/core";
+import { sleep } from "../utils";
 import type { CustomSceneOptions } from "./types";
 
 const defaultOptions: CustomSceneOptions = {
@@ -13,16 +14,12 @@ export abstract class BaseScene {
   constructor(canvas: HTMLCanvasElement, options = defaultOptions) {
     this.engine = new Engine(canvas);
     this.options = options;
-
-    this.initialize = this.initialize.bind(this);
   }
 
-  initialize() {
-    // binding methods
-    this.render = this.render.bind(this);
-    this.createScene = this.createScene.bind(this);
-
+  initialize = async () => {
     this.scene = this.createScene();
+
+    this.createEnvironment();
 
     // show devtools
     if (this.options.debug) {
@@ -32,26 +29,28 @@ export abstract class BaseScene {
     }
 
     this.engine.runRenderLoop(this.render);
-  }
+  };
 
   /**
-   *
    * @param engine
-   * @description create the scene with all the additional items in this function and return so that it can be consumed
+   * @description Create the scene with or without the additional items in this function
    */
-  abstract createScene(engine?: Engine): Scene;
+  abstract createScene: (engine?: Engine) => Scene;
 
   /**
-   *
-   * @description this method contains the rendering logic for the scene and can be overriden if needed
+   * @description Create the environment for the scene in this method.
+   * It is called just after the scene is created.
    */
-  render() {
+  createEnvironment: () => void = () => {};
+
+  /**
+   * @description This method contains the rendering logic for the scene and can be overriden if needed
+   */
+  render = () => {
     if (!this.scene) {
-      throw new Error(
-        "Uninitialized Scene Error: Scene not initialized yet initialize() should be called before render()"
-      );
+      throw new Error("initialize() should be called before calling render()");
     }
 
     this.scene.render();
-  }
+  };
 }
