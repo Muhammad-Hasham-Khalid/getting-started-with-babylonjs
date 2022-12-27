@@ -7,7 +7,6 @@ import {
   Texture,
   Vector3,
 } from "@babylonjs/core";
-import { pbrVertexDeclaration } from "@babylonjs/core/Shaders/ShadersInclude/pbrVertexDeclaration";
 import { BaseScene } from "./lib/base-scene";
 
 export class PBR extends BaseScene {

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { PBR } from "./modules/babylon";
+import { CustomModels } from "./modules/babylon";
 
 function App() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -15,7 +15,7 @@ function App() {
       ? (JSON.parse(valFromStorage) as boolean)
       : false;
 
-    const scene = new PBR(canvasRef.current, {
+    const scene = new CustomModels(canvasRef.current, {
       debug: showDebugger,
     });
 

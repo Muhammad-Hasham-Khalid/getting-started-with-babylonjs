@@ -1,5 +1,4 @@
 import { Engine, Scene } from "@babylonjs/core";
-import { sleep } from "../utils";
 import type { CustomSceneOptions } from "./types";
 
 const defaultOptions: CustomSceneOptions = {
@@ -16,7 +15,7 @@ export abstract class BaseScene {
     this.options = options;
   }
 
-  initialize = async () => {
+  initialize: () => void | Promise<void> = () => {
     this.scene = this.createScene();
 
     this.createEnvironment();
