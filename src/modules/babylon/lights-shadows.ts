@@ -1,29 +1,29 @@
 import {
-  Scene,
-  Engine,
-  FreeCamera,
-  Vector3,
-  HemisphericLight,
-  MeshBuilder,
-  SceneLoader,
   AbstractMesh,
-  GlowLayer,
-  LightGizmo,
-  GizmoManager,
-  Light,
   Color3,
-  DirectionalLight,
+  FreeCamera,
+  GizmoManager,
+  GlowLayer,
+  Light,
+  LightGizmo,
+  MeshBuilder,
   PointLight,
-  SpotLight,
+  Scene,
+  SceneLoader,
   ShadowGenerator,
+  SpotLight,
+  Vector3,
 } from "@babylonjs/core";
 import "@babylonjs/loaders";
 import { BaseScene } from "./lib/base-scene";
+import { Observers } from "./observers";
 
 export class LightsShadows extends BaseScene {
   lightTubes!: AbstractMesh[];
   models!: AbstractMesh[];
   ball!: AbstractMesh;
+
+  cameraMovementSubscription?: ReturnType<Scene["onKeyboardObservable"]["add"]>;
 
   initialize = async () => {
     this.scene = await this.createScene();
@@ -31,6 +31,8 @@ export class LightsShadows extends BaseScene {
     await this.createEnvironment();
     this.createLights();
 
+    await this.clearEvents();
+    await this.attachEvents();
     this.engine.runRenderLoop(this.render);
   };
 
@@ -47,7 +49,8 @@ export class LightsShadows extends BaseScene {
     const { meshes } = await SceneLoader.ImportMeshAsync(
       "",
       "./models/",
-      "LightingScene.glb"
+      "LightingScene.glb",
+      this.scene
     );
 
     this.models = meshes;
@@ -89,20 +92,20 @@ export class LightsShadows extends BaseScene {
     // );
 
     // POINT LIGHT
-    // const pointLight = new PointLight(
-    //   "pointLight",
-    //   new Vector3(0, 1, 0),
-    //   scene
-    // );
+    const pointLight = new PointLight(
+      "pointLight",
+      new Vector3(0, 1, 0),
+      scene
+    );
 
-    // const colors = [172, 246, 250].map((each) => each / 255);
-    // pointLight.diffuse = new Color3(...colors);
-    // pointLight.intensity = 0.5;
+    const colors = [172, 246, 250].map((each) => each / 255);
+    pointLight.diffuse = new Color3(...colors);
+    pointLight.intensity = 0.5;
 
-    // const pointLightClone = pointLight.clone("pointLightClone") as PointLight;
+    const pointLightClone = pointLight.clone("pointLightClone") as PointLight;
 
-    // pointLight.parent = this.lightTubes[0];
-    // pointLightClone.parent = this.lightTubes[1];
+    pointLight.parent = this.lightTubes[0];
+    pointLightClone.parent = this.lightTubes[1];
 
     // SPOTLIGHT
     const spotlight = new SpotLight(
@@ -147,4 +150,28 @@ export class LightsShadows extends BaseScene {
     gizmoManager.usePointerToAttachGizmos = false;
     gizmoManager.attachToMesh(lightGizmo.attachedMesh);
   }
+
+  clearEvents = async (scene = this.scene) => {
+    if (!scene) {
+      return;
+    }
+
+    if (this.cameraMovementSubscription) {
+      this.scene?.onKeyboardObservable.remove(this.cameraMovementSubscription);
+    }
+  };
+
+  attachEvents = async (scene = this.scene) => {
+    if (!scene) {
+      throw new Error("scene not initialized yet.");
+    }
+
+    const camera = scene.getCameraByName("camera");
+
+    if (camera && camera instanceof FreeCamera) {
+      this.cameraMovementSubscription = scene.onKeyboardObservable.add(
+        Observers.moveCameraUpDown(camera)
+      );
+    }
+  };
 }
