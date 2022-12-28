@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { LightsShadows } from "./modules/babylon";
+import { Portal, LightsShadows } from "./modules/babylon";
 
 function App() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -15,7 +15,7 @@ function App() {
       ? (JSON.parse(valFromStorage) as boolean)
       : false;
 
-    const scene = new LightsShadows(canvasRef.current, {
+    const scene = new Portal(canvasRef.current, {
       debug: showDebugger,
     });
 
