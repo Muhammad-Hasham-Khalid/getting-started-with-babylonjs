@@ -13,12 +13,18 @@ export abstract class BaseScene {
   constructor(canvas: HTMLCanvasElement, options = defaultOptions) {
     this.engine = new Engine(canvas);
     this.options = options;
+
+    if (options.customLoadingScreen) {
+      this.engine.loadingScreen = options.customLoadingScreen;
+    }
   }
 
   initialize: () => void | Promise<void> = async () => {
+    this.engine.displayLoadingUI();
     this.scene = await this.createScene();
 
     await this.createEnvironment();
+    this.engine.hideLoadingUI();
 
     // show devtools
     if (this.options.debug) {

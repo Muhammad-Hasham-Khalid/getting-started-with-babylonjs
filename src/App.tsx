@@ -1,8 +1,13 @@
 import { useEffect, useRef } from "react";
-import { Portal, LightsShadows } from "./modules/babylon";
+import { CustomLoading } from "./modules/babylon";
+import {
+  CustomLoadingScreen,
+  useLoadingContext,
+} from "./modules/babylon/loading";
 
 function App() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { show, hide, visible } = useLoadingContext();
 
   useEffect(() => {
     if (canvasRef.current === null) {
@@ -15,15 +20,21 @@ function App() {
       ? (JSON.parse(valFromStorage) as boolean)
       : false;
 
-    const scene = new Portal(canvasRef.current, {
+    const customLoadingScreen = new CustomLoadingScreen({
+      loaderApi: { show, hide },
+    });
+
+    const scene = new CustomLoading(canvasRef.current, {
       debug: showDebugger,
+      customLoadingScreen,
     });
 
     scene.initialize();
-  }, []);
+  }, [hide, show]);
 
   return (
     <div className="App">
+      {visible ? "LOADING" : null}
       <canvas ref={canvasRef} />
     </div>
   );
