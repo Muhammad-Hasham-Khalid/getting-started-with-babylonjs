@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { CustomLoading } from "./modules/babylon";
+import { useCallback, useEffect, useRef, CSSProperties } from "react";
+import { Portal } from "./modules/babylon";
 import {
   CustomLoadingScreen,
   useLoadingContext,
@@ -9,7 +9,7 @@ function App() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const { show, hide, visible } = useLoadingContext();
 
-  useEffect(() => {
+  const _onMounted = useCallback(async () => {
     if (canvasRef.current === null) {
       return;
     }
@@ -24,17 +24,40 @@ function App() {
       loaderApi: { show, hide },
     });
 
-    const scene = new CustomLoading(canvasRef.current, {
+    const scene = new Portal(canvasRef.current, {
       debug: showDebugger,
       customLoadingScreen,
     });
 
-    scene.initialize();
+    await scene.initialize();
+
+    return () => scene.dispose();
   }, [hide, show]);
+
+  useEffect(() => {
+    const _clear = _onMounted();
+
+    return () => {
+      _clear.then((f) => f?.());
+    };
+  }, [_onMounted]);
+
+  const loadingContainerStyles: CSSProperties = {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    backgroundColor: "black",
+    display: "grid",
+    placeItems: "center",
+    minWidth: "100vw",
+    minHeight: "100vh",
+    color: "white",
+    fontSize: 32,
+  };
 
   return (
     <div className="App">
-      {visible ? "LOADING" : null}
+      {visible ? <div style={loadingContainerStyles}>LOADING...</div> : null}
       <canvas ref={canvasRef} />
     </div>
   );

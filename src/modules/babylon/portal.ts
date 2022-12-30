@@ -10,6 +10,7 @@ import { BaseScene } from "./lib/base-scene";
 
 export class Portal extends BaseScene {
   initialize = async () => {
+    this.engine.displayLoadingUI();
     this.scene = await this.createScene();
 
     await this.createPortalRoom();
@@ -34,6 +35,7 @@ export class Portal extends BaseScene {
       await this.createPortalDoor(this.scene, doorPosition, rotation);
     }
 
+    this.engine.hideLoadingUI();
     this.engine.runRenderLoop(this.render);
   };
 

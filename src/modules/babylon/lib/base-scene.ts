@@ -19,6 +19,13 @@ export abstract class BaseScene {
     }
   }
 
+  private resize = () => this.scene?.getEngine().resize();
+
+  dispose = () => {
+    this.scene?.getEngine().dispose();
+    window.removeEventListener("resize", this.resize);
+  };
+
   initialize: () => void | Promise<void> = async () => {
     this.engine.displayLoadingUI();
     this.scene = await this.createScene();
@@ -32,6 +39,8 @@ export abstract class BaseScene {
     } else {
       this.scene.debugLayer.hide();
     }
+
+    window.addEventListener("resize", this.resize);
 
     this.engine.runRenderLoop(this.render);
   };
