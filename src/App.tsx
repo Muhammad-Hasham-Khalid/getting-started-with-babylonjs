@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, CSSProperties, useState } from "react";
-import { Portal } from "./modules/babylon";
+import { CameraMechanics } from "./modules/babylon";
 import { CustomLoadingScreen } from "./modules/babylon/loading";
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
       },
     });
 
-    const scene = new Portal(canvasRef.current, {
+    const scene = new CameraMechanics(canvasRef.current, {
       debug: showDebugger,
       customLoadingScreen,
     });

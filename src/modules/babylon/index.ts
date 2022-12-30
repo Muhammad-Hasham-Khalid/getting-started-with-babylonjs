@@ -8,3 +8,4 @@ export * from "./custom-models";
 export * from "./lights-shadows";
 export * from "./portal";
 export * from "./custom-loading";
+export * from './camera-mechanics';
