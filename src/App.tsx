@@ -1,13 +1,10 @@
-import { useCallback, useEffect, useRef, CSSProperties } from "react";
+import { useCallback, useEffect, useRef, CSSProperties, useState } from "react";
 import { Portal } from "./modules/babylon";
-import {
-  CustomLoadingScreen,
-  useLoadingContext,
-} from "./modules/babylon/loading";
+import { CustomLoadingScreen } from "./modules/babylon/loading";
 
 function App() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const { show, hide, visible } = useLoadingContext();
+  const [visible, setVisible] = useState(false);
 
   const _onMounted = useCallback(async () => {
     if (canvasRef.current === null) {
@@ -21,7 +18,10 @@ function App() {
       : false;
 
     const customLoadingScreen = new CustomLoadingScreen({
-      loaderApi: { show, hide },
+      loaderApi: {
+        show: () => setVisible(true),
+        hide: () => setVisible(false),
+      },
     });
 
     const scene = new Portal(canvasRef.current, {
@@ -32,7 +32,7 @@ function App() {
     await scene.initialize();
 
     return () => scene.dispose();
-  }, [hide, show]);
+  }, []);
 
   useEffect(() => {
     const _clear = _onMounted();
