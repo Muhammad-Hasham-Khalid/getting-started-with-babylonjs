@@ -19,6 +19,11 @@ export class Portal extends BaseScene {
       new Vector3(10, 0, 0),
       new Vector3(0, 0, 10),
       new Vector3(0, 0, -10),
+
+      new Vector3(-Math.sqrt(50), 0, -Math.sqrt(50)),
+      new Vector3(Math.sqrt(50), 0, Math.sqrt(50)),
+      new Vector3(-Math.sqrt(50), 0, Math.sqrt(50)),
+      new Vector3(Math.sqrt(50), 0, -Math.sqrt(50)),
     ];
 
     for (let i = 0; i < doors.length; i++) {
