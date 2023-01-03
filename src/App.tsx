@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, CSSProperties, useState } from "react";
-import { CameraMechanics } from "./modules/babylon";
-import { CustomLoadingScreen } from "./modules/babylon/loading";
+import { MeshActions } from "./modules/babylon";
+import { CustomLoadingScreen } from "./modules/babylon/lib/loading";
 
 function App() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [visible, setVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const _onMounted = useCallback(async () => {
     if (canvasRef.current === null) {
@@ -19,12 +19,12 @@ function App() {
 
     const customLoadingScreen = new CustomLoadingScreen({
       loaderApi: {
-        show: () => setVisible(true),
-        hide: () => setVisible(false),
+        show: () => setIsLoading(true),
+        hide: () => setIsLoading(false),
       },
     });
 
-    const scene = new CameraMechanics(canvasRef.current, {
+    const scene = new MeshActions(canvasRef.current, {
       debug: showDebugger,
       customLoadingScreen,
     });
@@ -42,25 +42,25 @@ function App() {
     };
   }, [_onMounted]);
 
-  const loadingContainerStyles: CSSProperties = {
-    position: "absolute",
-    top: "0",
-    left: "0",
-    backgroundColor: "black",
-    display: "grid",
-    placeItems: "center",
-    minWidth: "100vw",
-    minHeight: "100vh",
-    color: "white",
-    fontSize: 32,
-  };
-
   return (
     <div className="App">
-      {visible ? <div style={loadingContainerStyles}>LOADING...</div> : null}
+      {isLoading ? <div style={loadingContainerStyles}>LOADING...</div> : null}
       <canvas ref={canvasRef} />
     </div>
   );
 }
+
+const loadingContainerStyles: CSSProperties = {
+  position: "absolute",
+  top: "0",
+  left: "0",
+  backgroundColor: "black",
+  display: "grid",
+  placeItems: "center",
+  minWidth: "100vw",
+  minHeight: "100vh",
+  color: "white",
+  fontSize: 32,
+};
 
 export default App;

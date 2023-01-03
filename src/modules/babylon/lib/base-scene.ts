@@ -26,12 +26,12 @@ export abstract class BaseScene {
     window.removeEventListener("resize", this.resize);
   };
 
-  initialize: () => void | Promise<void> = async () => {
+  public async initialize() {
     this.engine.displayLoadingUI();
+    // ===================================
     this.scene = await this.createScene();
 
     await this.createEnvironment();
-    this.engine.hideLoadingUI();
 
     // show devtools
     if (this.options.debug) {
@@ -42,8 +42,10 @@ export abstract class BaseScene {
 
     window.addEventListener("resize", this.resize);
 
+    // ===================================
+    this.engine.hideLoadingUI();
     this.engine.runRenderLoop(this.render);
-  };
+  }
 
   /**
    * @param engine
