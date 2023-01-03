@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, CSSProperties, useState } from "react";
-import { MeshActions } from "./modules/babylon";
+import { MeshActions, PhysicsImposter } from "./modules/babylon";
 import { CustomLoadingScreen } from "./modules/babylon/lib/loading";
 
 function App() {

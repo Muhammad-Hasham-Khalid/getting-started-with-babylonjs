@@ -10,3 +10,5 @@ export * from "./portal";
 export * from "./custom-loading";
 export * from "./camera-mechanics";
 export * from "./mesh-actions";
+export * from "./first-person-controller";
+export * from "./physics-imposter";
