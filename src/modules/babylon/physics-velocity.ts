@@ -1,18 +1,16 @@
 import {
   AbstractMesh,
-  ActionManager,
   CannonJSPlugin,
   CubeTexture,
   FreeCamera,
-  HemisphericLight,
   MeshBuilder,
   PhysicsImpostor,
   Scene,
   SceneLoader,
   Vector3,
 } from "@babylonjs/core";
-import { BaseScene } from "./lib/base-scene";
 import * as CANNON from "cannon";
+import { BaseScene } from "./lib/base-scene";
 
 let gameOver = false;
 

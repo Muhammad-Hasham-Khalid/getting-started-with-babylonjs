@@ -1,7 +1,6 @@
 import {
   AbstractMesh,
   CannonJSPlugin,
-  Color3,
   FreeCamera,
   HemisphericLight,
   MeshBuilder,
@@ -12,8 +11,8 @@ import {
   StandardMaterial,
   Vector3,
 } from "@babylonjs/core";
-import { BaseScene } from "./lib/base-scene";
 import * as CANNON from "cannon";
+import { BaseScene } from "./lib/base-scene";
 import { getRandomColor } from "./utils";
 
 export class CollisionsTriggers extends BaseScene {
@@ -108,9 +107,9 @@ export class CollisionsTriggers extends BaseScene {
   }
 
   detectCollisions(
-    collider: PhysicsImpostor,
+    _collider: PhysicsImpostor,
     collidedAgainst: PhysicsImpostor | PhysicsImpostor[],
-    point: Nullable<Vector3>
+    _point: Nullable<Vector3>
   ) {
     const redMat = new StandardMaterial("redMat", this.scene);
     redMat.diffuseColor = getRandomColor();
@@ -143,6 +142,7 @@ export class CollisionsTriggers extends BaseScene {
     this.scene?.registerBeforeRender(() => {
       const intersects = box.intersectsMesh(this.sphere, true);
       if (intersects) counter++;
+      console.log("counter", counter);
     });
   }
 }
