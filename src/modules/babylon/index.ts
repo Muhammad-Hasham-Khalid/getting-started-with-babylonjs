@@ -14,3 +14,4 @@ export * from "./first-person-controller";
 export * from "./physics-imposter";
 export * from "./collisions-triggers";
 export * from "./physics-velocity";
+export * from "./physics-forces";
