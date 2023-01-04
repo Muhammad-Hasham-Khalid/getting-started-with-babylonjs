@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, CSSProperties, useState } from "react";
-import { MeshActions, PhysicsImposter } from "./modules/babylon";
+import { CollisionsTriggers } from "./modules/babylon";
 import { CustomLoadingScreen } from "./modules/babylon/lib/loading";
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
       },
     });
 
-    const scene = new MeshActions(canvasRef.current, {
+    const scene = new CollisionsTriggers(canvasRef.current, {
       debug: showDebugger,
       customLoadingScreen,
     });

@@ -12,3 +12,4 @@ export * from "./camera-mechanics";
 export * from "./mesh-actions";
 export * from "./first-person-controller";
 export * from "./physics-imposter";
+export * from "./collisions-triggers";
