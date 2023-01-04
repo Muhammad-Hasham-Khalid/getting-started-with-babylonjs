@@ -1,12 +1,23 @@
 import {
+  ActionManager,
   CubeTexture,
+  ExecuteCodeAction,
   FreeCamera,
   PointLight,
   Scene,
   SceneLoader,
   Vector3,
 } from "@babylonjs/core";
+import { BasicScene } from "./basic-scene";
+import { CameraMechanics } from "./camera-mechanics";
+import { CollisionsTriggers } from "./collisions-triggers";
+import { CustomModels } from "./custom-models";
+import { FirstPersonController } from "./first-person-controller";
 import { BaseScene } from "./lib/base-scene";
+import { LightsShadows } from "./lights-shadows";
+import { MeshActions } from "./mesh-actions";
+import { PBR } from "./PBR";
+import { StandardMaterials } from "./standard-materials";
 
 export class Portal extends BaseScene {
   initialize = async () => {
@@ -27,12 +38,28 @@ export class Portal extends BaseScene {
       new Vector3(Math.sqrt(50), 0, -Math.sqrt(50)),
     ];
 
+    const scenes: typeof BaseScene[] = [
+      CustomModels,
+      BasicScene,
+      MeshActions,
+      PBR,
+      StandardMaterials,
+      LightsShadows,
+      FirstPersonController,
+      CollisionsTriggers,
+    ];
+
     for (let i = 0; i < doors.length; i++) {
       const doorPosition = doors[i];
 
       const rotation = doorPosition.x !== 0 ? new Vector3(0, 90, 0) : undefined;
 
-      await this.createPortalDoor(this.scene, doorPosition, rotation);
+      await this.createPortalDoor(
+        this.scene,
+        scenes[i],
+        doorPosition,
+        rotation
+      );
     }
 
     this.engine.hideLoadingUI();
@@ -76,8 +103,9 @@ export class Portal extends BaseScene {
     return portalRoomModel;
   };
 
-  createPortalDoor = async (
+  createPortalDoor = async <T extends typeof BaseScene>(
     scene = this.scene,
+    NextScene: T,
     position?: Vector3,
     rotation?: Vector3
   ) => {
@@ -97,6 +125,19 @@ export class Portal extends BaseScene {
     if (rotation) {
       portalDoorModel.meshes[0].rotation = rotation;
     }
+
+    portalDoorModel.meshes[1].actionManager = new ActionManager(scene);
+    portalDoorModel.meshes[1].actionManager.registerAction(
+      new ExecuteCodeAction(ActionManager.OnPickDownTrigger, async (evt) => {
+        this.dispose();
+
+        const canvas = document.querySelector("canvas")!;
+        // TODO: find fix for the inherited class
+        // @ts-ignore
+        const scene = new NextScene(canvas);
+        await scene.initialize();
+      })
+    );
 
     return portalDoorModel;
   };
