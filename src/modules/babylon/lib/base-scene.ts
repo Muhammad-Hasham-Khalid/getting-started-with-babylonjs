@@ -21,10 +21,10 @@ export abstract class BaseScene {
 
   private resize = () => this.scene?.getEngine().resize();
 
-  dispose = () => {
+  public dispose() {
     this.scene?.getEngine().dispose();
     window.removeEventListener("resize", this.resize);
-  };
+  }
 
   public async initialize() {
     this.engine.displayLoadingUI();
