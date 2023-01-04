@@ -19,6 +19,7 @@ export class PhysicsForces extends BaseScene {
   cannonball?: Mesh;
   interval?: NodeJS.Timer;
   ground?: Mesh;
+  boxes: Mesh[] = [];
 
   createScene = (engine = this.engine) => {
     const scene = new Scene(engine);
@@ -57,12 +58,20 @@ export class PhysicsForces extends BaseScene {
 
     if (scene && scene.physicsEnabled) {
       this.createImpostors();
+
       this.interval = setInterval(() => {
+        if (this.boxes.length > 6) {
+          this.boxes[0].dispose();
+          this.boxes.shift();
+        }
+
         const x = Math.random() * 5;
         const y = Math.random() * 10 + 3;
         const z = Math.random() * 5;
-        this.createImpulse(scene, new Vector3(x, y, z));
+        const box = this.createImpulse(scene, new Vector3(x, y, z));
+        this.boxes.push(box);
       }, 5000);
+
       this.createCannonball();
 
       scene.onPointerDown = (evt) => {
@@ -144,6 +153,7 @@ export class PhysicsForces extends BaseScene {
     //     );
     //   })
     // );
+    return box;
   }
 
   createCannonball(scene = this.scene) {

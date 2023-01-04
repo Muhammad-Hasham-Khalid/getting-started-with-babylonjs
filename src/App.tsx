@@ -1,12 +1,12 @@
 import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
-import { PhysicsForces } from "./modules/babylon";
+import { PhysicsForces, Portal } from "./modules/babylon";
 import { CustomLoadingScreen } from "./modules/babylon/lib/loading";
 
 function App() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const _onMounted = useCallback(async () => {
+  const _useEffectAsync = useCallback(async () => {
     if (canvasRef.current === null) {
       return;
     }
@@ -35,12 +35,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const _clear = _onMounted();
+    const effect = _useEffectAsync();
 
     return () => {
-      _clear.then((f) => f?.());
+      effect.then((f) => f?.());
     };
-  }, [_onMounted]);
+  }, [_useEffectAsync]);
 
   return (
     <div className="App">
