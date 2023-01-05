@@ -32,7 +32,7 @@ export class PhysicsImposter extends BaseScene {
   };
 
   createEnvironment = async () => {
-    const { meshes } = await SceneLoader.ImportMeshAsync(
+    await SceneLoader.ImportMeshAsync(
       "",
       "./models/",
       "Prototype_Level_Simplified.glb",

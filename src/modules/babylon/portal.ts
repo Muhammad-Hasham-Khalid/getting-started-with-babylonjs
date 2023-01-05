@@ -9,7 +9,6 @@ import {
   Vector3,
 } from "@babylonjs/core";
 import { BasicScene } from "./basic-scene";
-import { CameraMechanics } from "./camera-mechanics";
 import { CollisionsTriggers } from "./collisions-triggers";
 import { CustomModels } from "./custom-models";
 import { FirstPersonController } from "./first-person-controller";

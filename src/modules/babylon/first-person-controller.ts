@@ -1,7 +1,6 @@
 import {
   FreeCamera,
   HemisphericLight,
-  Observable,
   Scene,
   SceneLoader,
   Vector3,
