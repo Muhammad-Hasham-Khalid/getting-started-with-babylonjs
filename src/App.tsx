@@ -1,5 +1,5 @@
 import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
-import { PhysicsForces, Portal } from "./modules/babylon";
+import { RayCasting } from "./modules/babylon";
 import { CustomLoadingScreen } from "./modules/babylon/lib/loading";
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
       },
     });
 
-    const scene = new PhysicsForces(canvasRef.current, {
+    const scene = new RayCasting(canvasRef.current, {
       debug: showDebugger,
       customLoadingScreen,
     });

@@ -15,3 +15,4 @@ export * from "./physics-imposter";
 export * from "./collisions-triggers";
 export * from "./physics-velocity";
 export * from "./physics-forces";
+export * from "./raycasting";

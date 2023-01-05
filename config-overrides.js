@@ -1,5 +1,4 @@
 module.exports = function override(config, env) {
-  console.log("override");
   let resolve = config.resolve;
   resolve.fallback = {
     fs: require.resolve("browserify-fs"),
