@@ -1,5 +1,5 @@
 import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
-import { Animations } from "./modules/babylon";
+import { CharacterAnimation } from "./modules/babylon";
 import { CustomLoadingScreen } from "./modules/babylon/lib/loading";
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
       },
     });
 
-    const scene = new Animations(canvasRef.current, {
+    const scene = new CharacterAnimation(canvasRef.current, {
       debug: showDebugger,
       customLoadingScreen,
     });
