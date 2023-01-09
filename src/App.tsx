@@ -1,5 +1,5 @@
 import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
-import { CutScene } from "./modules/babylon";
+import { AudioSample } from "./modules/babylon";
 import { CustomLoadingScreen } from "./modules/babylon/lib/loading";
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
       },
     });
 
-    const scene = new CutScene(canvasRef.current, {
+    const scene = new AudioSample(canvasRef.current, {
       debug: showDebugger,
       customLoadingScreen,
     });

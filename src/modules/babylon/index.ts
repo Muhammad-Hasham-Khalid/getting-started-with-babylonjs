@@ -19,3 +19,6 @@ export * from "./raycasting";
 export * from "./animations";
 export * from "./character-animation";
 export * from "./cutscene";
+export * from "./animation-events";
+export * from "./animation-blending";
+export * from "./audio-sample";
